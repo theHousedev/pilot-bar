@@ -43,4 +43,5 @@ func Load() (*Config, error) {
 
 	// config file is broken/invalid in some way
 
+	return nil, nil
 }
