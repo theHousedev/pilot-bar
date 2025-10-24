@@ -17,9 +17,11 @@ type Timestamp struct {
 	Time int `json:"time"`
 }
 
-type SiteWX struct {
+type WeatherData struct {
 	Station string    `json:"station"`
 	Issued  Timestamp `json:"issued"`
+	METAR   Report    `json:"metar"`
+	TAF     Forecast  `json:"taf"`
 }
 
 type SurfaceWind struct {
@@ -39,15 +41,20 @@ type TempData struct {
 	ExactDewpoint float64 `json:"exact_dewpoint"`
 }
 
+type TAFLine struct {
+	From Timestamp   `json:"from"`
+	Wind SurfaceWind `json:"wind"`
+}
+
 // Component types =========================================================
-type METAR struct {
-	RawData string       `json:"raw"`
-	Wind    SurfaceWind  `json:"winds"`
+type Report struct {
+	RawData string       `json:"raw_data"`
+	Wind    SurfaceWind  `json:"wind"`
 	Clouds  []CloudLayer `json:"clouds"`
 	Vis     int          `json:"vis"`
 	Temps   TempData     `json:"temps"`
 }
 
-type TAF struct {
-	Raw string
+type Forecast struct {
+	RawData string `json:"raw_data"`
 }
