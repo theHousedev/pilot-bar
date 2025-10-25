@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"log/slog"
 )
 
 type Config struct {
@@ -37,11 +38,26 @@ func getConfigFile() (string, error) {
 
 // Load - satisfied LSP noise
 func Load() (*Config, error) {
-	// config file doesn't exist; build it
+	configFile, err := getConfigFile()
+	if err != nil {
+		return nil, slog.Errorf("error getting config file: %w", err)
+	}
+	slog.Info("found config file", "file", configFile)
 
-	// config file is unreadable
+	// TODO: find a way to navigate things like:
+	// 		- config file doesn't exist
+	//		- config file is unreadable
+	//		- config file is broken/invalid JSON
 
-	// config file is broken/invalid in some way
 
-	return nil, nil
+	cfg, err := os.ReadFile(configFile)
+	if err != nil {
+		return nil, slog.Errorf("error reading config file: %w", err)
+	}
+	slog.Info("read config file", "file", configFile)
+	
+	return &Config{
+		Airport: cfg.Airport,
+		Modules: cfg.Modules,
+	}, nil
 }

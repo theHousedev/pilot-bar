@@ -1,0 +1,199 @@
+[
+  {
+    "icaoId": "PAMH",
+    "receiptTime": "2025-10-25T17:58:34.554Z",
+    "obsTime": 1761414960,
+    "reportTime": "2025-10-25T18:00:00.000Z",
+    "temp": -5.6,
+    "dewp": -6.7,
+    "wdir": 0,
+    "wspd": 0,
+    "visib": 4,
+    "altim": 1003.1,
+    "slp": 1003.5,
+    "qcField": 102,
+    "wxString": "-SN BR",
+    "presTend": 1.7,
+    "maxT": -5,
+    "minT": -6.1,
+    "precip": 0.005,
+    "pcp6hr": 0.01,
+    "metarType": "METAR",
+    "rawOb": "METAR PAMH 251756Z AUTO 00000KT 4SM -SN BR BKN030 BKN035 OVC070 M06/M07 A2962 RMK AO2 SLP035 P0000 60001 T10561067 11050 21061 51017 FZRANO TSNO",
+    "lat": 63.889,
+    "lon": -152.292,
+    "elev": 200,
+    "name": "Minchumina Arpt, AK, US",
+    "cover": "OVC",
+    "clouds": [
+      {
+        "cover": "BKN",
+        "base": 3000
+      },
+      {
+        "cover": "BKN",
+        "base": 3500
+      },
+      {
+        "cover": "OVC",
+        "base": 7000
+      }
+    ],
+    "fltCat": "MVFR"
+  },
+  {
+    "icaoId": "KSGF",
+    "receiptTime": "2025-10-25T16:56:18.725Z",
+    "obsTime": 1761411120,
+    "reportTime": "2025-10-25T17:00:00.000Z",
+    "temp": 12.2,
+    "dewp": 8.9,
+    "wdir": 120,
+    "wspd": 10,
+    "visib": "10+",
+    "altim": 1020.1,
+    "slp": 1019.9,
+    "qcField": 4,
+    "precip": 0.01,
+    "metarType": "METAR",
+    "rawOb": "METAR KSGF 251652Z 12010KT 10SM FEW060 SCT075 OVC100 12/09 A3012 RMK AO2 RAE37 SLP199 P0001 T01220089",
+    "lat": 37.2398,
+    "lon": -93.3899,
+    "elev": 387,
+    "name": "Springfield Muni, MO, US",
+    "cover": "OVC",
+    "clouds": [
+      {
+        "cover": "FEW",
+        "base": 6000
+      },
+      {
+        "cover": "SCT",
+        "base": 7500
+      },
+      {
+        "cover": "OVC",
+        "base": 10000
+      }
+    ],
+    "fltCat": "VFR"
+  },
+  {
+    "icaoId": "KLBL",
+    "receiptTime": "2025-10-25T17:58:30.758Z",
+    "obsTime": 1761414960,
+    "reportTime": "2025-10-25T18:00:00.000Z",
+    "temp": 13.3,
+    "dewp": 12.8,
+    "wdir": 320,
+    "wspd": 9,
+    "visib": "10+",
+    "altim": 1017.4,
+    "slp": 1016.2,
+    "qcField": 14,
+    "presTend": -0.5,
+    "maxT": 13.9,
+    "minT": 12.8,
+    "precip": 0.005,
+    "pcp6hr": 0.005,
+    "metarType": "METAR",
+    "rawOb": "METAR KLBL 251756Z AUTO 32009KT 10SM BKN008 OVC014 13/13 A3004 RMK AO2 RAE30 CIG 005V011 SLP162 P0000 60000 T01330128 10139 20128 58005 $",
+    "lat": 37.0375,
+    "lon": -100.9574,
+    "elev": 877,
+    "name": "Liberal/Mid America Rgnl, KS, US",
+    "cover": "OVC",
+    "clouds": [
+      {
+        "cover": "BKN",
+        "base": 800
+      },
+      {
+        "cover": "OVC",
+        "base": 1400
+      }
+    ],
+    "fltCat": "IFR"
+  },
+  {
+    "icaoId": "KSPS",
+    "receiptTime": "2025-10-25T17:56:15.606Z",
+    "obsTime": 1761414720,
+    "reportTime": "2025-10-25T18:00:00.000Z",
+    "temp": 21.1,
+    "dewp": 16.7,
+    "wdir": 10,
+    "wspd": 8,
+    "visib": "10+",
+    "altim": 1013.6,
+    "slp": 1012.7,
+    "qcField": 6,
+    "presTend": -0.4,
+    "maxT": 22.2,
+    "minT": 16.7,
+    "metarType": "METAR",
+    "rawOb": "METAR KSPS 251752Z AUTO 01008KT 10SM BKN021 BKN032 OVC048 21/17 A2993 RMK AO2 SLP127 T02110167 10222 20167 58004",
+    "lat": 33.9785,
+    "lon": -98.493,
+    "elev": 310,
+    "name": "Wichita Falls Rgnl, TX, US",
+    "cover": "OVC",
+    "clouds": [
+      {
+        "cover": "BKN",
+        "base": 2100
+      },
+      {
+        "cover": "BKN",
+        "base": 3200
+      },
+      {
+        "cover": "OVC",
+        "base": 4800
+      }
+    ],
+    "fltCat": "MVFR"
+  },
+  {
+    "icaoId": "KSGF",
+    "receiptTime": "2025-10-25T17:56:12.856Z",
+    "obsTime": 1761414720,
+    "reportTime": "2025-10-25T18:00:00.000Z",
+    "temp": 12.8,
+    "dewp": 8.9,
+    "wdir": 120,
+    "wspd": 8,
+    "visib": "10+",
+    "altim": 1019.4,
+    "slp": 1019,
+    "qcField": 4,
+    "wxString": "-RA",
+    "presTend": -0.9,
+    "maxT": 12.8,
+    "minT": 11.1,
+    "precip": 0.005,
+    "pcp6hr": 0.01,
+    "metarType": "METAR",
+    "rawOb": "METAR KSGF 251752Z 12008KT 10SM -RA BKN060 BKN080 OVC100 13/09 A3010 RMK AO2 RAB1657E07B48 SLP190 P0000 60001 T01280089 10128 20111 58009",
+    "lat": 37.2398,
+    "lon": -93.3899,
+    "elev": 387,
+    "name": "Springfield Muni, MO, US",
+    "cover": "OVC",
+    "clouds": [
+      {
+        "cover": "BKN",
+        "base": 6000
+      },
+      {
+        "cover": "BKN",
+        "base": 8000
+      },
+      {
+        "cover": "OVC",
+        "base": 10000
+      }
+    ],
+    "fltCat": "VFR"
+  }
+]

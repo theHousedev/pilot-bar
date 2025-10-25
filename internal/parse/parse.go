@@ -1,3 +1,10 @@
+// NOTE: This package may only be needed for remarks section
+
 package parse
 
-// handle breakdown of data for component utilization
+import (
+	"encoding/json"
+	"log/slog"
+
+	"github.com/pilot-bar/pkg/types/weather"
+)

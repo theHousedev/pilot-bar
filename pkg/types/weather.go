@@ -28,8 +28,8 @@ type SurfaceWind struct {
 }
 
 type CloudLayer struct {
-	Coverage  string `json:"coverage"`
-	HeightAGL int    `json:"height"`
+    Coverage string `json:"cover"`
+    Base     int    `json:"base"`
 }
 
 type TempData struct {
@@ -56,6 +56,21 @@ type ComponentMETAR struct {
 
 type TAFHeader struct {
 	Issued Timestamp
+}
+
+type METARResponse struct {
+    IcaoID      string        `json:"icaoId"`
+    ReportTime  string        `json:"reportTime"`
+    Temp        float64       `json:"temp"`
+    Dewpoint    float64       `json:"dewp"`
+    WindDir     int           `json:"wdir"`
+    WindSpeed   int           `json:"wspd"`
+    Visibility  string        `json:"visib"`
+    Altimeter   float64       `json:"altim"`
+    FlightCat   string        `json:"fltCat"`
+    RawMETAR    string        `json:"rawOb"`
+    Clouds      []CloudLayer  `json:"clouds"`
+    Name        string        `json:"name"`
 }
 
 type TAFLine struct {
