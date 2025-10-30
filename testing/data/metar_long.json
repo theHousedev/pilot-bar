@@ -1,0 +1,77 @@
+[
+  {
+    "icaoId": "KCGI",
+    "receiptTime": "2025-10-28T14:56:19.211Z",
+    "obsTime": 1761663180,
+    "reportTime": "2025-10-28T15:00:00.000Z",
+    "temp": 12.2,
+    "dewp": 11.7,
+    "wdir": 0,
+    "wspd": 0,
+    "visib": 3,
+    "altim": 1017.4,
+    "slp": 1017.2,
+    "qcField": 4,
+    "wxString": "BR",
+    "presTend": 1.7,
+    "precip": 0.02,
+    "pcp3hr": 0.02,
+    "metarType": "METAR",
+    "rawOb": "METAR KCGI 281453Z 00000KT 3SM BR OVC005 12/12 A3004 RMK AO2 RAE15B20E34 CIG 003V007 SLP172 P0002 60002 T01220117 53017",
+    "lat": 37.2254,
+    "lon": -89.5785,
+    "elev": 103,
+    "name": "Cape Girardeau Rgnl, MO, US",
+    "cover": "OVC",
+    "clouds": [
+      {
+        "cover": "OVC",
+        "base": 500
+      }
+    ],
+    "fltCat": "IFR"
+  },
+  {
+    "icaoId": "KCGI",
+    "receiptTime": "2025-10-29T11:56:17.345Z",
+    "obsTime": 1761738780,
+    "reportTime": "2025-10-29T12:00:00.000Z",
+    "temp": 12.8,
+    "dewp": 12.2,
+    "wdir": 50,
+    "wspd": 9,
+    "visib": 5,
+    "altim": 1003.8,
+    "slp": 1003.6,
+    "qcField": 4,
+    "wxString": "-RA BR",
+    "presTend": -0.5,
+    "maxT": 12.8,
+    "minT": 12.2,
+    "precip": 0.03,
+    "pcp6hr": 0.63,
+    "pcp24hr": 0.79,
+    "metarType": "METAR",
+    "rawOb": "METAR KCGI 291153Z 05009KT 5SM -RA BR FEW008 BKN014 OVC021 13/12 A2964 RMK AO2 SLP036 P0003 60063 70079 T01280122 10128 20122 56005",
+    "lat": 37.2254,
+    "lon": -89.5785,
+    "elev": 103,
+    "name": "Cape Girardeau Rgnl, MO, US",
+    "cover": "OVC",
+    "clouds": [
+      {
+        "cover": "FEW",
+        "base": 800
+      },
+      {
+        "cover": "BKN",
+        "base": 1400
+      },
+      {
+        "cover": "OVC",
+        "base": 2100
+      }
+    ],
+    "fltCat": "MVFR"
+  }
+]
