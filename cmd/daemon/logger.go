@@ -57,7 +57,7 @@ func (h *colorHandler) Handle(ctx context.Context, r slog.Record) error {
 			return true
 		case "error":
 			if r.Level >= slog.LevelError {
-				fmt.Fprintf(&b, "\n%s%s%s", colorRed, a.Value.String(), colorReset)
+				fmt.Fprintf(&b, " [%s%s%s]", colorRed, a.Value.String(), colorReset)
 			} else {
 				fmt.Fprintf(&b, "%s", a.Value.String())
 			}

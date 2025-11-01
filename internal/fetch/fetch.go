@@ -44,12 +44,12 @@ func FetchMETAR(icao string, maxAttempts int) (types.METARresponse, error) {
 		defer resp.Body.Close()
 
 		if statusRetryOK(resp.StatusCode) {
-			slog.Warn("Fetch returned retryable status", "status", resp.Status, "attempt", attempt)
-			return true, fmt.Errorf("retryable status %d: %s", resp.StatusCode, resp.Status)
+			slog.Warn("Fetch failed, OK to retry", "status", resp.Status, "attempt", attempt)
+			return true, fmt.Errorf("status %d: %s", resp.StatusCode, resp.Status)
 		}
 
 		if resp.StatusCode != http.StatusOK {
-			return false, fmt.Errorf("unexpected status %d: %s", resp.StatusCode, resp.Status)
+			return false, fmt.Errorf("status: %s", resp.Status)
 		}
 
 		var decoded []types.METARresponse
