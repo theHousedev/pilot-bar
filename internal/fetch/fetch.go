@@ -92,6 +92,7 @@ func doWithRetry(maxAttempts int, op func(attempt int) (bool, error)) error {
 
 func statusRetryOK(code int) bool {
 	switch code {
+	// TODO: expand codes
 	case http.StatusRequestTimeout, // 408
 		http.StatusTooManyRequests,     // 429
 		http.StatusInternalServerError, // 500
