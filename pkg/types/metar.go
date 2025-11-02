@@ -41,15 +41,15 @@ type METARresponse struct { // the full data returned by the API
 
 // component structs
 type WindData struct {
-	Direction degM   `json:"direction"`
-	Speed     knots  `json:"speed"`
-	Gusts     *knots `json:"gusts"`
+	Direction DegMag `json:"direction"`
+	Speed     Knots  `json:"speed"`
+	Gusts     *Knots `json:"gusts"`
 	Variable  bool   `json:"variable"`
 	Calm      bool   `json:"calm"`
 }
 
 type CloudData struct {
-	Base     feet   `json:"base"`
+	Base     Feet   `json:"base"`
 	Coverage string `json:"coverage"`
 }
 
@@ -64,9 +64,9 @@ type TempData struct {
 type METAR struct {
 	Reported   Timestamp   `json:"reported"`
 	Wind       WindData    `json:"wind"`
-	Visibility statuteMi   `json:"visiblity"`
+	Visibility Mi          `json:"visiblity"`
 	Clouds     []CloudData `json:"clouds"`
 	Temps      TempData    `json:"temps"`
-	Altimeter  inHg        `json:"altimeter"`
+	Altimeter  InHg        `json:"altimeter"`
 	Remarks    []string    `json:"remarks"`
 }

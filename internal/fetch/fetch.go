@@ -44,7 +44,7 @@ func FetchMETAR(icao string, maxAttempts int) (types.METARresponse, error) {
 		defer resp.Body.Close()
 
 		if statusRetryOK(resp.StatusCode) {
-			slog.Warn("Fetch failed, OK to retry", "status", resp.Status, "attempt", attempt)
+			slog.Warn("OK to retry", "status", resp.Status, "attempt", attempt)
 			return true, fmt.Errorf("status %d: %s", resp.StatusCode, resp.Status)
 		}
 
@@ -68,7 +68,8 @@ func FetchMETAR(icao string, maxAttempts int) (types.METARresponse, error) {
 		return types.METARresponse{}, err
 	}
 
-	slog.Info("Fetch OK", "took", fmt.Sprintf("%.3fs", time.Since(startTime).Seconds()))
+	fetchDuration := time.Since(startTime).Seconds()
+	slog.Info("Fetch OK", "took", fmt.Sprintf("%.3fs", fetchDuration))
 	return payload[0], nil
 }
 
@@ -92,13 +93,9 @@ func doWithRetry(maxAttempts int, op func(attempt int) (bool, error)) error {
 
 func statusRetryOK(code int) bool {
 	switch code {
-	// TODO: expand codes
-	case http.StatusRequestTimeout, // 408
-		http.StatusTooManyRequests,     // 429
-		http.StatusInternalServerError, // 500
-		http.StatusBadGateway,          // 502
-		http.StatusServiceUnavailable,  // 503
-		http.StatusGatewayTimeout:      // 504
+	case http.StatusRequestTimeout, http.StatusTooManyRequests,
+		http.StatusInternalServerError, http.StatusBadGateway,
+		http.StatusServiceUnavailable, http.StatusGatewayTimeout:
 		return true
 	default:
 		return false
