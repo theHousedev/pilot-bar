@@ -4,6 +4,7 @@ import (
 	"log/slog"
 
 	"github.com/theHousedev/pilot-bar/internal/fetch"
+	"github.com/theHousedev/pilot-bar/internal/parse"
 )
 
 func UpdateWX(flags Flags) error {
@@ -16,11 +17,15 @@ func UpdateWX(flags Flags) error {
 		return err
 	}
 
-	if *flags.Debug {
-		displayMETAR(metar)
-	} else {
-		slog.Info("", "METAR", metar.RawOb)
-	}
+	// if *flags.Debug {
+	// 	displayMETAR(metar)
+	// } else {
+	// 	slog.Info("", "METAR", metar.RawOb)
+	// }
+
+	// testing
+	// slog.Info("", "METAR", metar.RawOb)
+	parse.HandleMETAR(&metar)
 
 	return nil
 }
