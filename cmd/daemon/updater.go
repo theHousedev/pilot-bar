@@ -25,7 +25,10 @@ func UpdateWX(flags Flags) error {
 
 	// testing
 	// slog.Info("", "METAR", metar.RawOb)
-	parse.HandleMETAR(&metar)
+	err = parse.HandleMETAR(&metar)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

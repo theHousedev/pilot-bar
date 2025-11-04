@@ -62,6 +62,9 @@ func (h *colorHandler) Handle(ctx context.Context, r slog.Record) error {
 				fmt.Fprintf(&b, "%s", a.Value.String())
 			}
 			return false
+		case "tokens":
+			fmt.Fprintf(&b, "\n%s", a.Value.String())
+			return true
 		default:
 			fmt.Fprintf(&b, " %s=%s", a.Key, a.Value.String())
 			return true
