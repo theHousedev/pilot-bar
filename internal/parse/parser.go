@@ -29,14 +29,14 @@ func (c *ParseContext) getToken(i int) string {
 	return target
 }
 
-func HandleMETAR(data *types.METARresponse) error {
+func BuildInternalMETAR(data *types.METARresponse, output *types.METAR) error {
 	parsers := []parseFunc{
 		getAltimeter, getGusts, getWXString, getRemarks,
 	}
 	c := &ParseContext{
 		tokens: strings.Split(data.RawOb, " "),
 		index:  0,
-		output: &types.METAR{},
+		output: output,
 	}
 	slog.Debug("handleMETAR origin",
 		"tokens", c.tokens,

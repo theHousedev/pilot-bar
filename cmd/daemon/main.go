@@ -32,8 +32,8 @@ func main() {
 	flags := setupFlags()
 	InitLogger(flags)
 
-	// TODO: wrap in update controller when not testing
-	if err := UpdateWX(flags); err != nil {
-		slog.Error("UpdateWX", "error", err)
+	// TODO: when not testing, update should be automated
+	if err := Update(flags); err != nil {
+		slog.Error("Update", "error", err)
 	}
 }

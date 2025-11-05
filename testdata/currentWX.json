@@ -1,0 +1,30 @@
+{
+  "icao": "KCGI",
+  "last_update": 1762359700,
+  "elevation": 0,
+  "metar": {
+    "reported": {
+      "day": 0,
+      "zulu": 0,
+      "local": 0,
+      "epoch": 0
+    },
+    "wind": {
+      "direction": 0,
+      "speed": 0,
+      "gusts": null,
+      "variable": false,
+      "calm": false
+    },
+    "visiblity": 0,
+    "clouds": null,
+    "temps": {
+      "ambient": 0,
+      "dewpoint": 0,
+      "ambientExact": 0,
+      "dewpointExact": 0
+    },
+    "altimeter": 0,
+    "remarks": null
+  }
+}

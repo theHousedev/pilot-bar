@@ -15,7 +15,7 @@ import (
 const baseURL = "https://aviationweather.gov/api/data"
 
 // FetchMETAR loads full report into a default-shaped struct
-func FetchMETAR(icao string, maxAttempts int) (types.METARresponse, error) {
+func GetMETAR(icao string, maxAttempts int) (types.METARresponse, error) {
 	if maxAttempts < 1 {
 		maxAttempts = 1
 	}

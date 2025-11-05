@@ -3,7 +3,7 @@ package types
 type METARresponse struct { // the full data returned by the API
 	IcaoID      string   `json:"icaoId"`
 	ReceiptTime string   `json:"receiptTime"`
-	ObsTime     int      `json:"obsTime"`
+	ObsTime     int64    `json:"obsTime"`
 	ReportTime  string   `json:"reportTime"`
 	MetarType   string   `json:"metarType"`
 	Temp        float64  `json:"temp"`
