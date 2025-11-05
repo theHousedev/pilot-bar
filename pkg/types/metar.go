@@ -66,7 +66,7 @@ type METAR struct {
 	Wind       WindData    `json:"wind"`
 	Visibility Mi          `json:"visiblity"`
 	Clouds     []CloudData `json:"clouds"`
-	Temps      TempData    `json:"temps"`
+	Temp       TempData    `json:"temp"`
 	Altimeter  InHg        `json:"altimeter"`
 	Remarks    []string    `json:"remarks"`
 }

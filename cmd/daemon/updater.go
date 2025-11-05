@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log/slog"
 	"os"
 	"time"
@@ -12,69 +13,111 @@ import (
 )
 
 const (
-	MaxTries   = 5
-	CachePath  = "./testdata/currentWX.json"
-	UpdateFreq = 60 * 1 // TODO: adjust for prod
+	MaxTries  = 5
+	CachePath = "./testdata/currentWX.json"
+	// TODO: seconds vals below, 1min for testing - must edit for prod
+	UpdateInterval = 60
+	IntervalMETAR  = 60
+	IntervalTAF    = 60
+	IntervalAFD    = 60
 )
 
-func Update(flags Flags) error {
-	slog.Info("Update triggered", "airport", *flags.Airport)
+type UpdateData struct {
+	cached        types.Airport
+	requested     string
+	now           int64
+	intervalMETAR int64
+	intervalTAF   int64
+	intervalAFD   int64
+}
 
-	if _, err := os.Stat(CachePath); os.IsNotExist(err) {
-		// create initial cache file with basic info if it isn't found
-		err := writeCachedWX(CachePath, types.Airport{
-			ICAO:            *flags.Airport,
-			LastUpdateEpoch: time.Now().Unix(),
-			METAR: types.METAR{
-				Reported: types.Timestamp{
-					Epoch: 0, // empty entry to satisfy conditional below
-				},
-			},
-		})
-		if err != nil {
-			return err
-		}
+func (d *UpdateData) AirportChanged() bool {
+	return d.cached.ICAO != d.requested
+}
+
+func (d *UpdateData) METAREmpty() bool {
+	return d.cached.METAR.Reported.Epoch == 0
+}
+
+func (d *UpdateData) TimeExpired() bool {
+	return d.now-d.cached.LastUpdateEpoch > UpdateInterval
+}
+
+func (d *UpdateData) NeedsAnyUpdate() bool {
+	if d.AirportChanged() || d.METAREmpty() || d.TimeExpired() {
+		slog.Debug("Update needed,", "conditions", fmt.Sprintf(
+			"Airport changed: %t, METAR empty: %t, Time expired: %t",
+			d.AirportChanged(),
+			d.METAREmpty(),
+			d.TimeExpired(),
+		))
+		return true
 	}
-	cachedWX, err := readCachedWX(CachePath)
+	slog.Debug("No update needed")
+	return false
+}
+
+func Update(flags Flags) error {
+	slog.Debug("Update cycle called,", "ID", *flags.Airport)
+	cachedWX, err := readCachedWX(CachePath, flags)
 	if err != nil {
 		return err
 	}
 
-	if cachedWX.LastUpdateEpoch < time.Now().Unix()-UpdateFreq {
-		if cachedWX.ICAO == *flags.Airport {
-			metarAPIResp, err := fetch.GetMETAR(*flags.Airport, MaxTries)
-			if err != nil {
-				return err
-			}
+	d := &UpdateData{
+		cached:        cachedWX,
+		requested:     *flags.Airport,
+		now:           time.Now().Unix(),
+		intervalMETAR: IntervalMETAR,
+		intervalTAF:   IntervalTAF,
+		intervalAFD:   IntervalAFD,
+	}
 
-			if cachedWX.METAR.Reported.Epoch == metarAPIResp.ObsTime {
-				slog.Debug("fetched ObsTime matches Reported.Epoch")
-			} else {
-				slog.Debug("fetched ObsTime does not match Reported.Epoch")
-				err = parse.BuildInternalMETAR(&metarAPIResp, &cachedWX.METAR)
-				if err != nil {
-					return err
-				}
+	if !d.NeedsAnyUpdate() {
+		return nil
+	}
 
-				cachedWX.LastUpdateEpoch = time.Now().Unix()
-			}
-			err = writeCachedWX(CachePath, cachedWX)
-			if err != nil {
-				return err
-			}
-		} else { // airport has changed
-			slog.Info("new airport detected,", "icao", *flags.Airport)
-			// TODO: full package update
-			// 			- ICAO
-			// 			- LastUpdateEpoch
-			// 			- Elevation
-			// 			- METAR
-		}
+	APImetar, err := fetch.GetMETAR(*flags.Airport, MaxTries)
+	if err != nil {
+		return err
+	}
+
+	if err := parse.BuildInternalMETAR(&APImetar, &cachedWX.METAR); err != nil {
+		return err
+	}
+
+	if d.AirportChanged() {
+		cachedWX.ICAO = *flags.Airport
+		// convert meters to feet
+		cachedWX.Elevation = types.Feet(float64(APImetar.Elev) * 3.28084)
+	}
+
+	cachedWX.LastUpdateEpoch = time.Now().Unix()
+	cachedWX.METAR.Reported.Epoch = int64(APImetar.ObsTime)
+
+	return writeCachedWX(CachePath, cachedWX)
+}
+
+func ensureCacheExists(jsonPath string, flags Flags) error {
+	if _, err := os.Stat(jsonPath); os.IsNotExist(err) {
+		return writeCachedWX(jsonPath, types.Airport{
+			ICAO:            *flags.Airport,
+			LastUpdateEpoch: time.Now().Unix(),
+			METAR: types.METAR{
+				Reported: types.Timestamp{
+					Epoch: 0, // empty initial
+				},
+			},
+		})
 	}
 	return nil
 }
 
-func readCachedWX(jsonPath string) (types.Airport, error) {
+func readCachedWX(jsonPath string, flags Flags) (types.Airport, error) {
+	err := ensureCacheExists(jsonPath, flags)
+	if err != nil {
+		return types.Airport{}, err
+	}
 	jsonData, err := os.ReadFile(jsonPath)
 	if err != nil {
 		return types.Airport{}, err
@@ -90,4 +133,25 @@ func writeCachedWX(jsonPath string, cachedWX types.Airport) error {
 		return err
 	}
 	return os.WriteFile(jsonPath, jsonData, 0644)
+}
+
+func getCachedICAO(cachePath string) (string, error) {
+	jsonData, err := os.ReadFile(cachePath)
+	if err != nil {
+		return "", err
+	}
+	var cached types.Airport
+	if err := json.Unmarshal(jsonData, &cached); err != nil {
+		return "", err
+	}
+	return cached.ICAO, nil
+}
+
+func resolveAirport() (string, error) {
+	icao, err := getCachedICAO(CachePath)
+	if err == nil && icao != "" {
+		return icao, nil
+	}
+	slog.Warn("no cached or provided airport. using default: KCGI")
+	return "KCGI", nil
 }
