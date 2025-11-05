@@ -45,10 +45,9 @@ func (d *UpdateData) TimeExpired() bool {
 
 func (d *UpdateData) NeedsAnyUpdate() bool {
 	if d.AirportChanged() || d.METAREmpty() || d.TimeExpired() {
-		slog.Debug("Update needed,", "conditions", fmt.Sprintf(
-			"Airport changed: %t, METAR empty: %t, Time expired: %t",
+		slog.Debug("Update needed,", "list", fmt.Sprintf(
+			"\nID change: %t\nTimeout:   %t",
 			d.AirportChanged(),
-			d.METAREmpty(),
 			d.TimeExpired(),
 		))
 		return true
@@ -88,7 +87,6 @@ func Update(flags Flags) error {
 
 	if d.AirportChanged() {
 		cachedWX.ICAO = *flags.Airport
-		// convert meters to feet
 		cachedWX.Elevation = types.Feet(float64(APImetar.Elev) * 3.28084)
 	}
 
