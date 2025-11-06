@@ -6,4 +6,4 @@
 .env
 config.json
 
-currentWX.json
+**/currentWX.json
