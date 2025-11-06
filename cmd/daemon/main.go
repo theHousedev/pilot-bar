@@ -8,15 +8,15 @@ import (
 
 type Flags struct {
 	Airport *string
-	Update  *bool
 	Debug   *bool
 	Info    *bool
+	Update  *bool
 }
 
 func setupFlags() Flags {
 	info := pflag.BoolP("info", "i", false, "enable info logging")
 	debug := pflag.BoolP("debug", "d", false, "enable debug logging")
-	update := pflag.BoolP("update", "u", false, "update station data")
+	update := pflag.BoolP("update", "u", false, "force update cycle")
 
 	defaultID, err := resolveAirport()
 	if err != nil {
@@ -28,9 +28,9 @@ func setupFlags() Flags {
 	pflag.Parse()
 	return Flags{
 		Airport: airport,
-		Update:  update,
 		Debug:   debug,
 		Info:    info,
+		Update:  update,
 	}
 }
 

@@ -62,6 +62,51 @@ func (h *colorHandler) Handle(ctx context.Context, r slog.Record) error {
 				fmt.Fprintf(&b, "%s", a.Value.String())
 			}
 			return false
+		case "list":
+			m, ok := a.Value.Any().(map[string]any)
+			if !ok {
+				return true
+			}
+			if len(m) == 0 {
+				return true
+			}
+
+			maxLen := 0
+			for key := range m {
+				if len(key) > maxLen {
+					maxLen = len(key)
+				}
+			}
+
+			for key, value := range m {
+				var valStr string
+				switch value.(type) {
+				case string:
+					valStr = fmt.Sprintf("%q", value)
+				case bool:
+					if value == true {
+						valStr = fmt.Sprintf("%s%t%s", colorGreen, value, colorReset)
+					} else {
+						valStr = fmt.Sprintf("%s%t%s", colorRed, value, colorReset)
+					}
+				case int, int8, int16, int32, int64, uint, uint8, uint16,
+					uint32, uint64, float32, float64:
+					valStr = fmt.Sprintf("%s%v%s", colorYellow, value, colorReset)
+				}
+
+				if maxLen > 0 {
+					fmt.Fprintf(
+						&b, "\n%s%s    %-*s: %s%s%s%s",
+						colorGreen, colorDim, maxLen, key, colorReset,
+						colorGreen, valStr, colorReset)
+				} else {
+					fmt.Fprintf(&b, "\n%s    %s: %s%s%s%s%s",
+						colorGreen, colorDim, key, colorReset,
+						colorGreen, valStr, colorReset)
+				}
+			}
+			fmt.Fprintf(&b, colorReset)
+			return true
 		case "tokens":
 			fmt.Fprintf(&b, "\n%s", a.Value.String())
 			return true

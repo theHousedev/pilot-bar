@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"log/slog"
 	"os"
 	"time"
@@ -43,13 +42,13 @@ func (d *UpdateData) TimeExpired() bool {
 	return d.now-d.cached.LastUpdateEpoch > UpdateInterval
 }
 
-func (d *UpdateData) NeedsAnyUpdate() bool {
-	if d.AirportChanged() || d.METAREmpty() || d.TimeExpired() {
-		slog.Debug("Update needed,", "list", fmt.Sprintf(
-			"\nID change: %t\nTimeout:   %t",
-			d.AirportChanged(),
-			d.TimeExpired(),
-		))
+func (d *UpdateData) NeedsAnyUpdate(force bool) bool {
+	if force || d.AirportChanged() || d.METAREmpty() || d.TimeExpired() {
+		slog.Debug("Proceeding with update", "list", map[string]any{
+			"New ID":       d.AirportChanged(),
+			"Timeout":      d.TimeExpired(),
+			"Force update": force,
+		})
 		return true
 	}
 	slog.Debug("No update needed")
@@ -57,7 +56,6 @@ func (d *UpdateData) NeedsAnyUpdate() bool {
 }
 
 func Update(flags Flags) error {
-	slog.Debug("Update cycle called,", "ID", *flags.Airport)
 	cachedWX, err := readCachedWX(CachePath, flags)
 	if err != nil {
 		return err
@@ -72,7 +70,7 @@ func Update(flags Flags) error {
 		intervalAFD:   IntervalAFD,
 	}
 
-	if !d.NeedsAnyUpdate() {
+	if !d.NeedsAnyUpdate(*flags.Update) {
 		return nil
 	}
 
