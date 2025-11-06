@@ -11,12 +11,14 @@ type Flags struct {
 	Debug   *bool
 	Info    *bool
 	Update  *bool
+	Verbose *bool
 }
 
 func setupFlags() Flags {
 	info := pflag.BoolP("info", "i", false, "enable info logging")
 	debug := pflag.BoolP("debug", "d", false, "enable debug logging")
 	update := pflag.BoolP("update", "u", false, "force update cycle")
+	verbose := pflag.BoolP("verbose", "v", false, "enable verbose output")
 
 	defaultID, err := resolveAirport()
 	if err != nil {
@@ -31,6 +33,7 @@ func setupFlags() Flags {
 		Debug:   debug,
 		Info:    info,
 		Update:  update,
+		Verbose: verbose,
 	}
 }
 
@@ -38,7 +41,6 @@ func main() {
 	flags := setupFlags()
 	InitLogger(flags)
 
-	// TODO: when not testing, update should be automated
 	if err := Update(flags); err != nil {
 		slog.Error("Update", "error", err)
 	}

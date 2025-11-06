@@ -47,7 +47,7 @@ func (h *colorHandler) Handle(ctx context.Context, r slog.Record) error {
 		key := strings.ToLower(a.Key)
 		switch key {
 		case "metar":
-			fmt.Fprintf(&b, "%s", a.Value.String())
+			fmt.Fprintf(&b, "\n%s", a.Value.String())
 			return false
 		case "airport":
 			fmt.Fprintf(&b, " [%s]", a.Value.String())

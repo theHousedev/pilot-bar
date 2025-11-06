@@ -47,10 +47,6 @@ func BuildInternalMETAR(data *types.METARresponse, output *types.METAR) error {
 		index:  0,
 		output: output,
 	}
-	slog.Debug("handleMETAR origin",
-		"tokens", c.tokens,
-		"index", c.index,
-	)
 
 	for _, parser := range parsers {
 		err := parser(c)

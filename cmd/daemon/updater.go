@@ -79,6 +79,12 @@ func Update(flags Flags) error {
 		return err
 	}
 
+	if *flags.Verbose {
+		displayMETAR(APImetar)
+	} else {
+		slog.Debug("", "metar", APImetar.RawOb)
+	}
+
 	if err := parse.BuildInternalMETAR(&APImetar, &cachedWX.METAR); err != nil {
 		return err
 	}

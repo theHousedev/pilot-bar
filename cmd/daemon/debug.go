@@ -7,7 +7,6 @@ import (
 )
 
 func displayMETAR(data types.METARresponse) error {
-	fmt.Println("--------------------------------")
 	fmt.Println("  IcaoID...........", data.IcaoID)
 	fmt.Println("  ReceiptTime......", data.ReceiptTime)
 	fmt.Println("  ObsTime..........", data.ObsTime)
@@ -71,6 +70,5 @@ func displayMETAR(data types.METARresponse) error {
 		}
 	}
 	fmt.Println("  FltCat...........", data.FltCat)
-	fmt.Println("--------------------------------")
 	return nil
 }
