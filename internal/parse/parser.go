@@ -40,7 +40,7 @@ func BuildInternalMETAR(data *types.METARresponse, output *types.METAR) error {
 	output.Reported.Local = provideTimeData(data.ReportTime, "local")
 
 	parsers := []parseFunc{
-		getAltimeter, getWind, getWXString, getRemarks,
+		loadAltimeter, loadWind, loadWXString, loadRemarks,
 	}
 	c := &ParseContext{
 		tokens: strings.Split(data.RawOb, " "),
@@ -91,7 +91,7 @@ func provideCloudCover(coverage string) string {
 	}
 }
 
-func getAltimeter(ctx *ParseContext) error {
+func loadAltimeter(ctx *ParseContext) error {
 	for _, token := range ctx.tokens {
 		if len(token) == 5 && strings.HasPrefix(token, "A") {
 			altVal, err := strconv.ParseFloat(token[1:], 64)
@@ -105,7 +105,7 @@ func getAltimeter(ctx *ParseContext) error {
 	return nil
 }
 
-func getWind(ctx *ParseContext) error {
+func loadWind(ctx *ParseContext) error {
 	for _, token := range ctx.tokens {
 		if strings.HasSuffix(token, "KT") {
 			if token[:3] == "VRB" {
@@ -152,10 +152,17 @@ func getWind(ctx *ParseContext) error {
 	return nil
 }
 
-func getWXString(ctx *ParseContext) error {
+func loadWXString(ctx *ParseContext) error {
 	return nil
 }
 
-func getRemarks(ctx *ParseContext) error {
-	return nil
+func loadRemarks(ctx *ParseContext) error {
+	for i, token := range ctx.tokens {
+		slog.Debug("Loop", "i", i)
+		if token == "RMK" {
+			slog.Debug("inRemarks", "state")
+			ctx.output.metar.Remarks := ctx.tokens[i:]
+		}
+	}
+	return nil, fmt.Errorf("Remarks not found")
 }
