@@ -68,5 +68,8 @@ type METAR struct {
 	Clouds     []CloudData `json:"clouds"`
 	Temp       TempData    `json:"temp"`
 	Altimeter  InHg        `json:"altimeter"`
-	Remarks    []string    `json:"remarks"`
+	Remarks    struct {
+		Raw      []string `json:"raw"`
+		Readable []string `json:"readable"`
+	} `json:"remarks"`
 }

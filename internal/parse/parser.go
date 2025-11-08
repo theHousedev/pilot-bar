@@ -3,6 +3,7 @@ package parse
 import (
 	"fmt"
 	"log/slog"
+	"slices"
 	"strconv"
 	"strings"
 	"time"
@@ -12,7 +13,6 @@ import (
 
 type ParseContext struct {
 	tokens []string
-	index  int
 	input  *types.METARresponse
 	output *types.METAR
 }
@@ -35,7 +35,6 @@ func BuildInternalMETAR(data *types.METARresponse, output *types.METAR) error {
 		})
 	}
 
-	// "receiptTime": "2025-10-28T14:56:19.211Z",
 	output.Reported.Zulu = provideTimeData(data.ReportTime, "zulu")
 	output.Reported.Local = provideTimeData(data.ReportTime, "local")
 
@@ -44,7 +43,6 @@ func BuildInternalMETAR(data *types.METARresponse, output *types.METAR) error {
 	}
 	c := &ParseContext{
 		tokens: strings.Split(data.RawOb, " "),
-		index:  0,
 		output: output,
 	}
 
@@ -91,6 +89,7 @@ func provideCloudCover(coverage string) string {
 	}
 }
 
+// TODO: slices refactor?
 func loadAltimeter(ctx *ParseContext) error {
 	for _, token := range ctx.tokens {
 		if len(token) == 5 && strings.HasPrefix(token, "A") {
@@ -105,6 +104,7 @@ func loadAltimeter(ctx *ParseContext) error {
 	return nil
 }
 
+// TODO: slices refactor?
 func loadWind(ctx *ParseContext) error {
 	for _, token := range ctx.tokens {
 		if strings.HasSuffix(token, "KT") {
@@ -157,12 +157,34 @@ func loadWXString(ctx *ParseContext) error {
 }
 
 func loadRemarks(ctx *ParseContext) error {
-	for i, token := range ctx.tokens {
-		slog.Debug("Loop", "i", i)
-		if token == "RMK" {
-			slog.Debug("inRemarks", "state")
-			ctx.output.metar.Remarks := ctx.tokens[i:]
+	idx := slices.Index(ctx.tokens, "RMK")
+	if idx != -1 && idx+1 < len(ctx.tokens) {
+		rmkTokens := ctx.tokens[idx+1:]
+		raw, readable := processRemarks(rmkTokens)
+		ctx.output.Remarks.Raw = raw
+		ctx.output.Remarks.Readable = readable
+	}
+	return nil
+}
+
+var matchCases = [2]string{"AO2", "$"}
+
+func processRemarks(remarkTokens []string) (raw []string, readable []string) {
+	// TODO: if token meets certain criteria, make it human-readable
+	// for now: arbitary creation of test strings
+	for _, token := range remarkTokens {
+		if slices.Contains(matchCases[:], token) {
+			slog.Debug("match", "token", token)
+			readable = append(readable, createReadableRemark(token))
+		} else {
+			slog.Debug("non-match", "token", token)
+			raw = append(raw, token)
 		}
 	}
-	return nil, fmt.Errorf("Remarks not found")
+	return raw, readable
+}
+
+func createReadableRemark(token string) string {
+	// TODO: need custom parsing. for now just output a string
+	return fmt.Sprintf("%s is a match", token)
 }
