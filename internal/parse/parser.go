@@ -185,6 +185,6 @@ func processRemarks(remarkTokens []string) (raw []string, readable []string) {
 }
 
 func createReadableRemark(token string) string {
-	// TODO: need custom parsing. for now just output a string
+	// TODO: need custom parsing. for now just output a string placedholder
 	return fmt.Sprintf("%s is a match", token)
 }
