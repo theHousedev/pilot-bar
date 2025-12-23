@@ -14,7 +14,8 @@ import (
 const (
 	MaxTries  = 5
 	CachePath = "./testdata/currentWX.json"
-	// TODO: seconds vals below, 1min for testing - must edit for prod
+
+	// NOTE: seconds vals below, 1min for testing - must edit for prod
 	UpdateInterval = 60
 	IntervalMETAR  = 60
 	IntervalTAF    = 60
@@ -30,7 +31,7 @@ type UpdateData struct {
 	intervalAFD   int64
 }
 
-func (d *UpdateData) AirportChanged() bool {
+func (d *UpdateData) ICAOChanged() bool {
 	return d.cached.ICAO != d.requested
 }
 
@@ -43,9 +44,9 @@ func (d *UpdateData) TimeExpired() bool {
 }
 
 func (d *UpdateData) NeedsAnyUpdate(force bool) bool {
-	if force || d.AirportChanged() || d.METAREmpty() || d.TimeExpired() {
+	if force || d.ICAOChanged() || d.METAREmpty() || d.TimeExpired() {
 		slog.Debug("Proceeding with update", "list", map[string]any{
-			"New ID":       d.AirportChanged(),
+			"New ID":       d.ICAOChanged(),
 			"Timeout":      d.TimeExpired(),
 			"Force update": force,
 		})
@@ -89,7 +90,7 @@ func Update(flags Flags) error {
 		return err
 	}
 
-	if d.AirportChanged() {
+	if d.ICAOChanged() {
 		cachedWX.ICAO = *flags.Airport
 		cachedWX.Elevation = types.Feet(float64(APImetar.Elev) * 3.28084)
 	}
@@ -107,7 +108,7 @@ func ensureCacheExists(jsonPath string, flags Flags) error {
 			LastUpdateEpoch: time.Now().Unix(),
 			METAR: types.METAR{
 				Reported: types.Timestamp{
-					Epoch: 0, // empty initial
+					Epoch: 0,
 				},
 			},
 		})

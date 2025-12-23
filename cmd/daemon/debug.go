@@ -71,5 +71,4 @@ func displayMETAR(data types.METARresponse) error {
 	}
 	fmt.Println("  FltCat...........", data.FltCat)
 	return nil
-	// todo: expand
 }

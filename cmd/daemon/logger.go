@@ -37,7 +37,7 @@ func (h *colorHandler) Handle(ctx context.Context, r slog.Record) error {
 	}
 
 	var b strings.Builder
-	fmt.Fprintf(&b, "[%s%s%s%s] %s %s",
+	fmt.Fprintf(&b, "%s%s[%s]%s %s %s",
 		colorDim, colorCyan, r.Time.Format("01/02 1504:05.000"), colorReset,
 		levelLabel(r.Level),
 		r.Message,
