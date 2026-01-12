@@ -6,9 +6,9 @@ import (
 	"os"
 	"time"
 
-	"github.com/theHousedev/pilot-bar/internal/fetch"
-	"github.com/theHousedev/pilot-bar/internal/parse"
-	"github.com/theHousedev/pilot-bar/pkg/types"
+	"github.com/house-holder/pilot-bar/internal/fetch"
+	"github.com/house-holder/pilot-bar/internal/parse"
+	"github.com/house-holder/pilot-bar/pkg/types"
 )
 
 const (

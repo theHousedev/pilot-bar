@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/theHousedev/pilot-bar/pkg/types"
+	"github.com/house-holder/pilot-bar/pkg/types"
 )
 
 const baseURL = "https://aviationweather.gov/api/data"

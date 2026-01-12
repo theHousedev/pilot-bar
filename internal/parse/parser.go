@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/theHousedev/pilot-bar/pkg/types"
+	"github.com/house-holder/pilot-bar/pkg/types"
 )
 
 type ParseContext struct {
