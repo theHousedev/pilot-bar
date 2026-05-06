@@ -43,6 +43,20 @@ func switchAirport(icao string, flags Flags) error {
 	return nil
 }
 
+func changeAirport(flags Flags) error {
+	icao, err := promptUser()
+	if err != nil {
+		return err
+	}
+	return switchAirport(icao, flags)
+}
+
+func promptUser() (string, error) {
+	cmd := exec.Command("wofi", "--dmenu", "--prompt", "Airport ICAO:")
+	output, err := cmd.Output()
+	return strings.TrimSpace(string(output)), err
+}
+
 func signalWaybar() {
 	if err := exec.Command("pkill", fmt.Sprintf("-RTMIN+%d", waybarSignal), "waybar").Run(); err != nil {
 		slog.Debug("waybar signal failed (waybar may not be running)", "error", err)
