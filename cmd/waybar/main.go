@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"html"
 	"os"
 	"strings"
 
@@ -137,12 +138,16 @@ func ceiling(clouds []types.CloudData) (icon string, alt int, ok bool) {
 
 func formatTooltip(wx types.Airport) string {
 	var b strings.Builder
-	fmt.Fprintf(&b, "<tt>%s</tt>", wx.METAR.RawOb)
+	metarHTML := html.EscapeString(wx.METAR.RawOb)
+
+	fmt.Fprintf(&b, "<tt>%s</tt>", metarHTML)
 	if wx.RawTAF != "" {
-		fmt.Fprintf(&b, "\n\n<tt>%s</tt>", wrapTAF(wx.RawTAF))
+		tafHTML := html.EscapeString(wx.RawTAF)
+		fmt.Fprintf(&b, "\n\n<tt>%s</tt>", wrapTAF(tafHTML))
 	}
 	if wx.RawAFD != "" {
-		fmt.Fprintf(&b, "\n\n%s", wx.RawAFD)
+		afdHTML := html.EscapeString(wx.RawAFD)
+		fmt.Fprintf(&b, "\n\n%s", afdHTML)
 	}
 	return b.String()
 }
