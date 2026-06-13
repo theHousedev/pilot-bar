@@ -103,7 +103,7 @@ Create your config file: `~/.config/pilot-bar/config.json` (or `$XDG_CONFIG_HOME
 ### Format tokens
 
 | Token | Description | Example |
-|---|---|---|---|
+|---|---|---|
 | `{temps}` | Ambient / Dewpoint (in configured unit) | `12.8/10.2` |
 | `{temp}` | Ambient only (in configured unit) | `12.8` |
 | `{dewpoint}` | Dewpoint only (in configured unit) | `10.2` |
