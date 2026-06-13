@@ -106,16 +106,16 @@ Create your config file: `~/.config/pilot-bar/config.json` (or `$XDG_CONFIG_HOME
 |---|---|---|
 | `{temps}` | Ambient / Dewpoint (in configured unit) | `12.8/10.2` |
 | `{temp}` | Ambient only (in configured unit) | `12.8` |
-| `{dewpoint}` | Dewpoint only (in configured unit) | `10.2` |
+| `{dewp}` | Dewpoint only (in configured unit) | `10.2` |
 | `{winds}` | Wind direction/speed/gusts | `120/10G15` |
 | `{cloud-icon}` | Nerd Font icon for ceiling layer | 󰪣 |
 | `{clouds}` | Ceiling altitude (hundreds of ft) | `030` |
 | `{vis}` | Visibility (shown if < 6SM) | `3SM` |
 | `{wx}` | Weather string | `-RA BR` |
-| `{stationID}` | ICAO code | `KCGI` |
+| `{station}` | ICAO code | `KCGI` |
 | `{age}` | Minutes since observation | `13` |
-| `{fltcat}` | Flight category | `IFR` |
-| `{altimeter}` | Altimeter in inHg | `29.92` |
+| `{cat}` | Flight category | `IFR` |
+| `{alt}` | Altimeter in inHg | `29.92` |
 
 ### Cloud icons (Nerd Fonts)
 

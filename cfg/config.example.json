@@ -5,6 +5,6 @@
     "modules": {
         "metar": false,
         "taf": true,
-        "discussion": true,
+        "discussion": true
     }
 }

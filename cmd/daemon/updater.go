@@ -11,9 +11,7 @@ import (
 )
 
 const (
-	MaxTries = 5
-
-	// NOTE: seconds vals below, 1min for testing - must edit for prod
+	MaxTries       = 5
 	UpdateInterval = 60
 	IntervalMETAR  = 60
 	IntervalTAF    = 60

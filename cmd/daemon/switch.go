@@ -15,7 +15,10 @@ const waybarSignal = 8
 func switchAirport(icao string, flags Flags) error {
 	icao = strings.ToUpper(icao)
 	if len(icao) != 4 {
-		return fmt.Errorf("invalid ICAO identifier: %q (expected 4 characters)", icao)
+		return fmt.Errorf(
+			"invalid ICAO identifier: %q (expected 4 characters)",
+			icao,
+		)
 	}
 
 	slog.Info("Switching airport", "icao", icao)
@@ -37,7 +40,11 @@ func switchAirport(icao string, flags Flags) error {
 	*flags.Airport = icao
 	if err := Update(flags); err != nil {
 		if oldCache.ICAO != "" {
-			slog.Warn("Update failed, restoring previous airport", "icao", oldCache.ICAO)
+			slog.Warn(
+				"Update failed, restoring previous airport",
+				"icao",
+				oldCache.ICAO,
+			)
 			cache.Write(oldCache)
 			*flags.Airport = oldCache.ICAO
 		}
@@ -62,13 +69,16 @@ func changeAirport(flags Flags) error {
 }
 
 func promptUser() (string, error) {
-	cmd := exec.Command("wofi", "--dmenu", "--prompt", "Airport ICAO:", "--lines", "1", "--width", "15", "--location", "1")
+	cmd := exec.Command("wofi", "--dmenu", "--prompt", "Airport ICAO:",
+		"--lines", "1", "--width", "15", "--location", "1")
 	output, err := cmd.Output()
 	return strings.TrimSpace(string(output)), err
 }
 
 func signalWaybar() {
-	if err := exec.Command("pkill", fmt.Sprintf("-RTMIN+%d", waybarSignal), "waybar").Run(); err != nil {
-		slog.Debug("waybar signal failed (waybar may not be running)", "error", err)
+	if err := exec.Command("pkill", fmt.Sprintf("-RTMIN+%d", waybarSignal),
+		"waybar").Run(); err != nil {
+		slog.Debug("waybar signal failed (waybar may not be running)",
+			"error", err)
 	}
 }

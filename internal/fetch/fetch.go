@@ -29,7 +29,8 @@ func GetMETAR(icao string, maxAttempts int) (types.METARresponse, error) {
 	var payload []types.METARresponse
 	err := doWithRetry(maxAttempts, func(attempt int) (bool, error) {
 		if attempt > 1 {
-			slog.Info(fmt.Sprintf("Fetch METAR retry (%d of %d)", attempt, maxAttempts))
+			slog.Info(fmt.Sprintf("Fetch METAR retry (%d of %d)",
+				attempt, maxAttempts))
 		} else {
 			slog.Info("Fetching METAR")
 		}
@@ -38,7 +39,8 @@ func GetMETAR(icao string, maxAttempts int) (types.METARresponse, error) {
 		if err != nil {
 			var netErr net.Error
 			if errors.As(err, &netErr) && netErr.Timeout() {
-				slog.Warn("Fetch timeout", "attempt", attempt, "max", maxAttempts)
+				slog.Warn("Fetch timeout", "attempt", attempt, "max",
+					maxAttempts)
 				return true, err
 			}
 			return false, fmt.Errorf("HTTP request failed: %w", err)
@@ -46,8 +48,11 @@ func GetMETAR(icao string, maxAttempts int) (types.METARresponse, error) {
 		defer resp.Body.Close()
 
 		if statusRetryOK(resp.StatusCode) {
-			slog.Warn("OK to retry", "status", resp.Status, "attempt", attempt)
-			return true, fmt.Errorf("status %d: %s", resp.StatusCode, resp.Status)
+			slog.Warn(
+				"OK to retry", "status", resp.Status, "attempt", attempt,
+			)
+			return true, fmt.Errorf("status %d: %s", resp.StatusCode,
+				resp.Status)
 		}
 
 		if resp.StatusCode != http.StatusOK {
@@ -87,7 +92,8 @@ func GetTAF(icao string, maxAttempts int) (types.TAFresponse, error) {
 	var payload []types.TAFresponse
 	err := doWithRetry(maxAttempts, func(attempt int) (bool, error) {
 		if attempt > 1 {
-			slog.Info(fmt.Sprintf("Fetch TAF retry (%d of %d)", attempt, maxAttempts))
+			slog.Info(fmt.Sprintf("Fetch TAF retry (%d of %d)", attempt,
+				maxAttempts))
 		} else {
 			slog.Info("Fetching TAF")
 		}
@@ -96,7 +102,8 @@ func GetTAF(icao string, maxAttempts int) (types.TAFresponse, error) {
 		if err != nil {
 			var netErr net.Error
 			if errors.As(err, &netErr) && netErr.Timeout() {
-				slog.Warn("Fetch timeout", "attempt", attempt, "max", maxAttempts)
+				slog.Warn("Fetch timeout", "attempt", attempt, "max",
+					maxAttempts)
 				return true, err
 			}
 			return false, fmt.Errorf("HTTP request failed: %w", err)
@@ -104,8 +111,11 @@ func GetTAF(icao string, maxAttempts int) (types.TAFresponse, error) {
 		defer resp.Body.Close()
 
 		if statusRetryOK(resp.StatusCode) {
-			slog.Warn("OK to retry", "status", resp.Status, "attempt", attempt)
-			return true, fmt.Errorf("status %d: %s", resp.StatusCode, resp.Status)
+			slog.Warn("OK to retry", "status", resp.Status, "attempt",
+				attempt)
+			return true, fmt.Errorf(
+				"status %d: %s", resp.StatusCode, resp.Status,
+			)
 		}
 
 		if resp.StatusCode != http.StatusOK {

@@ -72,16 +72,16 @@ func formatText(wx types.Airport, format string, tempUnit string) string {
 	replacer := strings.NewReplacer(
 		"{temps}", fmt.Sprintf("%.1f/%.1f", ambF, dewF),
 		"{temp}", fmt.Sprintf("%.1f", ambF),
-		"{dewpoint}", fmt.Sprintf("%.1f", dewF),
+		"{dewp}", fmt.Sprintf("%.1f", dewF),
 		"{winds}", fmtWind(m.Wind),
 		"{cloud-icon}", fmtIf(hasCeiling, icon),
 		"{clouds}", fmtIf(hasCeiling, fmt.Sprintf("%03d", alt)),
 		"{vis}", fmtVis(m.Visibility),
 		"{wx}", m.WxString,
-		"{stationID}", wx.ICAO,
+		"{station}", wx.ICAO,
 		"{age}", fmt.Sprintf("%d", m.Reported.Age),
-		"{fltcat}", m.FltCat,
-		"{altimeter}", fmt.Sprintf("%.2f", float64(m.Altimeter)),
+		"{cat}", m.FltCat,
+		"{alt}", fmt.Sprintf("%.2f", float64(m.Altimeter)),
 	)
 
 	result := replacer.Replace(format)
