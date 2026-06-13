@@ -20,6 +20,11 @@ func switchAirport(icao string, flags Flags) error {
 
 	slog.Info("Switching airport", "icao", icao)
 
+	oldCache, err := cache.Read()
+	if err != nil {
+		slog.Warn("No previous cache to fall back to", "error", err)
+	}
+
 	if err := cache.Write(types.Airport{
 		ICAO: icao,
 		METAR: types.METAR{
@@ -31,7 +36,12 @@ func switchAirport(icao string, flags Flags) error {
 
 	*flags.Airport = icao
 	if err := Update(flags); err != nil {
-		return err
+		if oldCache.ICAO != "" {
+			slog.Warn("Update failed, restoring previous airport", "icao", oldCache.ICAO)
+			cache.Write(oldCache)
+			*flags.Airport = oldCache.ICAO
+		}
+		return fmt.Errorf("update failed for %s: %w", icao, err)
 	}
 
 	wx, err := cache.Read()
@@ -52,7 +62,7 @@ func changeAirport(flags Flags) error {
 }
 
 func promptUser() (string, error) {
-	cmd := exec.Command("wofi", "--dmenu", "--prompt", "Airport ICAO:")
+	cmd := exec.Command("wofi", "--dmenu", "--prompt", "Airport ICAO:", "--lines", "1", "--width", "15", "--location", "1")
 	output, err := cmd.Output()
 	return strings.TrimSpace(string(output)), err
 }

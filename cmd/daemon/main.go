@@ -53,10 +53,6 @@ func main() {
 		return
 	}
 	if len(args) > 0 && args[0] == "change" {
-		if len(args) < 2 {
-			slog.Error("usage: pilot-bar-daemon change")
-			return
-		}
 		if err := changeAirport(flags); err != nil {
 			slog.Error("Change", "error", err)
 		}

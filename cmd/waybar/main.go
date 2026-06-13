@@ -36,7 +36,7 @@ func main() {
 	}
 
 	out := WaybarOutput{
-		Text:    formatText(wx, barFormat),
+		Text:    formatText(wx, barFormat, cfg.TempUnit),
 		Tooltip: formatTooltip(wx),
 		Class:   strings.ToLower(wx.METAR.FltCat),
 		Alt:     wx.METAR.FltCat,
@@ -51,20 +51,23 @@ const (
 )
 
 var cloudIcons = map[string]string{
-	"FEW": "\U000F0A9E", // 󰪞
-	"SCT": "\U000F0A9F", // 󰪟
+	"FEW": "\U000F0A9F", // 󰪟
+	"SCT": "\U000F0AA1", // 󰪡
 	"BKN": "\U000F0AA3", // 󰪣
 	"OVC": "\U000F0AA5", // 󰪥
 }
 
-func convertTemps(ambient, dewpoint float64) (float64, float64) {
+func convertTemps(ambient, dewpoint float64, unit string) (float64, float64) {
+	if unit == "C" {
+		return ambient, dewpoint
+	}
 	return (ambient*9.0/5.0 + 32), (dewpoint*9.0/5.0 + 32)
 }
 
-func formatText(wx types.Airport, format string) string {
+func formatText(wx types.Airport, format string, tempUnit string) string {
 	m := wx.METAR
 	icon, alt, hasCeiling := ceiling(m.Clouds)
-	ambF, dewF := convertTemps(m.Temp.AmbientExact, m.Temp.DewpointExact)
+	ambF, dewF := convertTemps(m.Temp.AmbientExact, m.Temp.DewpointExact, tempUnit)
 
 	replacer := strings.NewReplacer(
 		"{temps}", fmt.Sprintf("%.1f/%.1f", ambF, dewF),

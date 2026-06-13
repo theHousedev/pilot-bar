@@ -7,9 +7,10 @@ import (
 )
 
 type Config struct {
-	Airport string    `json:"airport"`
-	Format  string    `json:"format"`
-	Modules ModuleCfg `json:"modules"`
+	Airport  string    `json:"airport"`
+	Format   string    `json:"format"`
+	TempUnit string    `json:"tempUnit"`
+	Modules  ModuleCfg `json:"modules"`
 }
 
 type ModuleCfg struct {
@@ -45,6 +46,9 @@ func Load() *Config {
 
 	if cfg.Format == "" {
 		cfg.Format = defaults.Format
+	}
+	if cfg.TempUnit != "F" && cfg.TempUnit != "C" {
+		cfg.TempUnit = "C"
 	}
 
 	return &cfg

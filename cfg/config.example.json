@@ -1,11 +1,10 @@
 {
-    "airport": "KCGI",
+    "airport": "KLAX",
     "format": "{temps} {vis} {cloud-icon} {clouds} {wx}",
+    "tempUnit": "C",
     "modules": {
-        "metar": true,
-        "taf": false,
-        "discussion": false,
-        "airmet": false,
-        "pirep": false
+        "metar": false,
+        "taf": true,
+        "discussion": true,
     }
 }
